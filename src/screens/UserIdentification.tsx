@@ -1,15 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
+import {Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Button } from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 export function UserIdentification(){
+    const navigation = useNavigation()
     const [isFocused ,setIsFocused] = useState(false)
     const [isFilled, setIsFilled] = useState(false);
     const [name,setName] = useState<string>();
     
-
+    function handleSubmit(){
+        navigation.navigate("Confirmation")
+    }
     function handleInputBlur(){
         setIsFocused(false);
         setIsFilled(!!name)
@@ -24,6 +29,7 @@ export function UserIdentification(){
     }
     return(
         <SafeAreaView style={styles.container}>
+            
             <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === "ios" ? "padding" : "height"}>
@@ -43,11 +49,14 @@ export function UserIdentification(){
                         onFocus={handleInputFocus}
                         onChangeText={handleInputChange}/>
                         <View style={styles.footer}>
-                            <Button/>
+                            <Button 
+                            title="Confirmar"
+                            onPress={handleSubmit}/>
                         </View>
                         
                     </View>
                 </View>
+                
             </KeyboardAvoidingView>
         </SafeAreaView>
     )
