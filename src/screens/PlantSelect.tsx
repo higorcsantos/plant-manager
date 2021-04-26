@@ -32,11 +32,13 @@ export function PlantSelect(){
         setEnviromentSelected(environment);
 
         if (environment == 'all')
-            return setFilteredPlants(plants);
-
-        const filtered = plants.filter(plant => {
+        {
+            return setFilteredPlants(plants)
+        }
+            
+        const filtered = plants.filter(plant => 
             plant.environments.includes(environment)
-        })
+        );        
 
         setFilteredPlants(filtered)
         
