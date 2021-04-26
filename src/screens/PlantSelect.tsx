@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View,FlatList } from "react-native";
 import { EnviromentButton } from "../components/EnviromentButton";
 import { Header } from "../components/Header";
+import { Load } from "../components/Load";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
 import api from "../services/api";
 import colors from "../styles/colors"
@@ -26,15 +27,14 @@ export function PlantSelect(){
     const [enviroments,setEnviroments] = useState<EnvironmentProps[]>([]);
     const [plants,setPlants] = useState<PlantCardProps[]>([]);
     const [filteredPlants,setFilteredPlants] = useState<PlantCardProps[]>([]);
-    const [environmentSelected,setEnviromentSelected] = useState("all")
+    const [environmentSelected,setEnviromentSelected] = useState("all");
+    const [load, setLoad] = useState(true)
 
     function handleEnvironmentSelected(environment: string) {
         setEnviromentSelected(environment);
 
         if (environment == 'all')
-        {
             return setFilteredPlants(plants)
-        }
             
         const filtered = plants.filter(plant => 
             plant.environments.includes(environment)
@@ -63,10 +63,14 @@ export function PlantSelect(){
     useEffect(() => {
         async function fetchPlants(){
             const {data} = await api.get('plants?_sort=name&order=asc');
-            setPlants(data)
+            setFilteredPlants(data);
+            setLoad(false)
         }
         fetchPlants()
     }, [])
+    if(load){
+        return <Load/>
+    }
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: "center",
         paddingBottom: 5,
-        marginLeft: 32,
+        marginHorizontal: 32,
         marginVertical: 32
     },
     plants: {
