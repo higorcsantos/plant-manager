@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import {Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {Alert, KeyboardAvoidingView, Platform, SafeAreaView, StyleSheet, Text, TextInput, View} from "react-native";
 import { Button } from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export function UserIdentification(){
     const navigation = useNavigation()
@@ -12,7 +12,13 @@ export function UserIdentification(){
     const [isFilled, setIsFilled] = useState(false);
     const [name,setName] = useState<string>();
     
-    function handleSubmit(){
+    async function handleSubmit(){
+        if(!name){
+            return Alert.alert("Me diz como voce se chama 🥲")
+        }
+
+        await AsyncStorage.setItem("@plantmanager:user", name);
+
         navigation.navigate("Confirmation")
     }
     function handleInputBlur(){
@@ -36,7 +42,7 @@ export function UserIdentification(){
                 <View style={styles.content}>
                     <View style={styles.form}>
                     <Text style={styles.emoji}>
-                            {isFilled ? "😃" : "😄"}
+                            {isFilled ? "😄" : "😃"}
                     </Text>
                         <Text style={styles.title}>Como podemos {"\n"}
                         chamar voce?</Text>
