@@ -17,9 +17,21 @@ export function UserIdentification(){
             return Alert.alert("Me diz como voce se chama 🥲")
         }
 
+        try{
         await AsyncStorage.setItem("@plantmanager:user", name);
+        navigation.navigate("Confirmation", {
+            title: "Prontinho",
+            subtitle: "Agora vamos começar a cuidar das suas plantinhas",
+            buttonTitle: "Começar",
+            icon: "smile",
+            nextScreen: "PlantSelect"
+        })
 
-        navigation.navigate("Confirmation")
+        }catch(error){
+            Alert.alert("Erro ao salvar o seu nome 🥲")
+        }
+
+        
     }
     function handleInputBlur(){
         setIsFocused(false);
